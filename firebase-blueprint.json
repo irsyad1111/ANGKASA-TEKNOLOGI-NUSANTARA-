@@ -1,0 +1,129 @@
+{
+  "entities": {
+    "Business": {
+      "title": "Business",
+      "description": "A business venture owned by the user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the business." },
+        "name": { "type": "string", "description": "Name of the business." },
+        "description": { "type": "string", "description": "Short description of the business." },
+        "ownerUid": { "type": "string", "description": "UID of the owner." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the business was added." }
+      },
+      "required": ["name", "ownerUid", "createdAt"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "A financial transaction (income or expense) for a business.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the transaction." },
+        "businessId": { "type": "string", "description": "ID of the associated business." },
+        "type": { "type": "string", "enum": ["income", "expense"], "description": "Type of transaction." },
+        "amount": { "type": "number", "description": "Amount of the transaction." },
+        "category": { "type": "string", "description": "Category of the transaction (e.g., Sales, Rent, Salary)." },
+        "description": { "type": "string", "description": "Details about the transaction." },
+        "date": { "type": "string", "format": "date-time", "description": "Date of the transaction." },
+        "ownerUid": { "type": "string", "description": "UID of the user who created it." }
+      },
+      "required": ["businessId", "type", "amount", "category", "date", "ownerUid"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "A custom category for transactions.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier." },
+        "name": { "type": "string", "description": "Name of the category." },
+        "type": { "type": "string", "enum": ["income", "expense"], "description": "Which type of transaction this category applies to." },
+        "ownerUid": { "type": "string", "description": "UID of the owner." }
+      },
+      "required": ["name", "type", "ownerUid"]
+    },
+    "Employee": {
+      "title": "Employee",
+      "description": "An employee working for a specific business.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "name": { "type": "string" },
+        "position": { "type": "string" },
+        "ownerUid": { "type": "string" }
+      },
+      "required": ["businessId", "name", "ownerUid"]
+    },
+    "Attendance": {
+      "title": "Attendance",
+      "description": "Daily attendance record for an employee.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "employeeId": { "type": "string" },
+        "businessId": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["present", "absent", "late", "leave"] },
+        "ownerUid": { "type": "string" }
+      },
+      "required": ["employeeId", "businessId", "date", "status", "ownerUid"]
+    },
+    "UserRole": {
+      "title": "UserRole",
+      "description": "Maps a user to a business with a specific role.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "userUid": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "role": { "type": "string", "enum": ["superadmin", "manager"] }
+      },
+      "required": ["businessId", "userUid", "role"]
+    },
+    "AppSettings": {
+      "title": "App Settings",
+      "description": "Global application branding and settings.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "appName": { "type": "string" },
+        "primaryColor": { "type": "string" },
+        "logoColor": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "updatedBy": { "type": "string" }
+      },
+      "required": ["appName", "primaryColor", "logoColor"]
+    }
+  },
+  "firestore": {
+    "/businesses/{businessId}": {
+      "schema": "Business",
+      "description": "User's businesses."
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Financial records."
+    },
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Custom categories."
+    },
+    "/employees/{employeeId}": {
+      "schema": "Employee",
+      "description": "Business employees."
+    },
+    "/attendance/{attendanceId}": {
+      "schema": "Attendance",
+      "description": "Employee attendance records."
+    },
+    "/userRoles/{roleId}": {
+      "schema": "UserRole",
+      "description": "Role assignments."
+    },
+    "/appSettings/{settingsId}": {
+      "schema": "AppSettings",
+      "description": "Global app settings."
+    }
+  }
+}
